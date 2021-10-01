@@ -1,0 +1,221 @@
+library(tidyverse)
+library(readxl)
+library(naniar)
+library(stringr)
+
+###Base PME2017
+
+PME2017 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2017.xlsx")
+
+#### Limpieza base PME2017
+
+#Asignar NA cuando no hay acción escrita en nombre_actividad1
+
+# https://cran.r-project.org/web/packages/naniar/vignettes/replace-with-na.html
+
+PME2017 <- PME2017 %>%
+  replace_with_na(replace = list(nombre_actividad1 = 
+                                   c("no hay acción", "objetivo no se ocupará", 
+                                     "objetivo no se utilizará",
+                                     "No existe estrategia para realizar acción error de digitación", 
+                                     "sin acción", "- No procede.", "- No aplica.", 
+                                     "- Estrategia no aplica.", "- Estrategia no corresponde.", 
+                                     "- Estrategia no procede.", "..", ".", "ERROR SISTEMA", 
+                                     "error de plataforma", "REPETIDO", "REPETIDO1", "no hay acción", 
+                                     "- Repite Estrategia. No procede.", "0000", "000", "00", "0", 
+                                     "000000", "00000", "ERROR DEL SISTEMA", "ERROR DE SISTEMA", 
+                                     "ERRO DEL SISTEMA", "ERROR EN EL SISTEMA", "ERROR", 
+                                     "ERROR SISTEMA DOS", "ERROR EN EL SISTEMA.", 
+                                     "ERROR EN EL SISTEMA DOS", "ERROR DOS", "....", ".......", 
+                                     "ggg",	 "fff",	"vvv",	 "xxx",	 "mmm", "lll", "nnn", 
+                                     "-------", "------", "pppppp pp", "ooo oo", "xxxx", "sss  sssss", 
+                                     "xxxxxx", "xxxxxx  xx   xxxx", ".-", ".-.", "-", 
+                                     "error de digitación", "Error de digitación", "No hay Acción",	
+                                     "NO HAY ACCIÓN",	"No hay acción",	"XXXX",	"XXX",	"XXXXXX",	
+                                     "MMM",	"NNN",	"ERRor",	"Error",	"Error de sistema",	
+                                     "error sistema",	"ERROR DE PLATAFORMA")))
+
+sum(is.na(PME2017$nombre_actividad1))
+
+##Eliminación de filas con NA en la var. Nombre actividad
+
+PME2017 <- PME2017[!(is.na(PME2017$nombre_actividad1)), ]
+
+###Para normalizar el texto se puede usar "Latin-ASCII", sin embargo también elimina las "ñ".
+    #library("stringi")
+    #stri_trans_general(PME2017$nombre_actividad1, 'Latin-ASCII')
+    #stri_trans_general(PME2017$descripcion_actividad1, 'Latin-ASCII')
+
+#Se realiza manual:
+
+    # pasar a minúscula
+
+PME2017$nombre_actividad1 <- tolower(PME2017$nombre_actividad1)
+PME2017$descripcion_actividad1 <- tolower(PME2017$descripcion_actividad1)
+
+    # Reeemplazar tildes y otros caracteres
+
+PME2017$nombre_actividad1 <- str_replace_all(PME2017$nombre_actividad1, 
+                                                  c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                                    "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                                    "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                                    "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                                    "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+PME2017$descripcion_actividad1 <- str_replace_all(PME2017$descripcion_actividad1, 
+                                                  c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                                    "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                                    "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                                    "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                                    "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+### en caso de error:      options(max.print = 60000) 
+
+##corrección ortográfica 
+      #Problema: muy pocas palabras en el diccionario
+      ### Se descarga al computador diccionario en español, desde aquí: https://bit.ly/3AwbEcd 
+      ### terminación del archivo .oxl se debe cambiar a .zip para ser leído
+      ###fuente: https://www.datanalytics.com/2017/02/20/probando-hunspell-para-el-procesamiento-de-texto-en-espanol/
+
+      #library(hunspell)
+      #esp <- dictionary("/Users/aliciaibanez/Documents/1. ASIDES/DOC/Prueba/es_CL/es_CL.dic")
+      #PME2017$NomAct_word_check <- hunspell(PME2017$nombre_actividad1, dict = esp)
+      #PME2017$NomAct_word_check[1:10]
+
+##división BD 2017
+
+PME2017_CE <- PME2017 %>%
+  filter(dimension1 == "Convivencia Escolar")
+
+PME2017_GR <- PME2017 %>%
+  filter(dimension1 == "Gestión de Recursos")
+
+PME2017_GP <- PME2017 %>%
+  filter(dimension1 == "Gestión Pedagógica")
+
+PME2017_L <- PME2017 %>%
+  filter(dimension1 == "Liderazgo")
+
+###Base PME2018
+
+PME2018 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2018.xlsx")
+
+#### Limpieza base PME2018
+
+#Asignar NA cuando no hay acción escrita en nombre_actividad1
+
+PME2018 <- PME2018 %>%
+  replace_with_na(replace = list(nombre_actividad1 = 
+                                   c("No hay acción",	"No  hay   Acción error de digitación",	
+                                     "Error de Estrategia",	"Error en la Estrategia 2",	".....",	
+                                     "....",	"..",	".",	"00000",	"0000",	"000",	"0000000",	"000000",	
+                                     "HHHHH",	"zzzzzzzzzzzz",	"xx",	"zzzzz",	"nnnnnnnn",	"hps",	"xxxx",	
+                                     "xxx",	"xxxxxxxxxxxxxxxxxxxxxx",	"..................................",	
+                                     "xxxxxxxxxxxxxxx",	"...................................",	
+                                     "xxxxxxxxxxxxxxxx",	"xxxxxxxxxxxxxxxxxx",	"no hay acción",
+                                     ".................................",	"xxxxxxxxxxxxxxxxxxxxx",	
+                                     "xxxxxxxxxxxxxxxxx",	"ttttttttttttttttttttttt",	
+                                     "xxxxxxxxxxxxxxxxxxxxxxxxx",	"xxxxxxxxx",	"........................",	
+                                     ".....................................",	"r",	"z", "XXXXXXXXXXXXXXXX", 
+                                     "XXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXX", "XXX", "XX", "XXXX", "XXXXXXXXX")))
+
+sum(is.na(PME2018$nombre_actividad1))
+
+##Eliminación de filas con NA en la var. Nombre actividad
+
+PME2018 <- PME2018[!(is.na(PME2018$nombre_actividad1)), ]
+
+# pasar a minuscula
+
+PME2018$nombre_actividad1 <- tolower(PME2018$nombre_actividad1)
+PME2018$descripcion_actividad1 <- tolower(PME2018$descripcion_actividad1)
+
+### Reeemplazar tildes 
+
+PME2018$nombre_actividad1 <- str_replace_all(PME2018$nombre_actividad1, 
+                                             c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                               "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                               "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                               "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                               "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+
+PME2018$descripcion_actividad1 <- str_replace_all(PME2018$descripcion_actividad1, 
+                                                  c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                                    "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                                    "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                                    "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                                    "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+##división BD 2018
+
+PME2018_CE <- PME2018 %>%
+  filter(dimension1 == "Convivencia Escolar")
+
+PME2018_GR <- PME2018 %>%
+  filter(dimension1 == "Gestión de Recursos")
+
+PME2018_GP <- PME2018 %>%
+  filter(dimension1 == "Gestión Pedagógica")
+
+PME2018_L <- PME2018 %>%
+  filter(dimension1 == "Liderazgo")
+
+
+### PME2019
+
+PME2019 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2019.xlsx")
+
+
+#### Limpieza base PME2018
+
+#Asignar NA cuando no hay acción escrita en nombre_actividad1
+
+PME2019 <- PME2019 %>%
+  replace_with_na(replace = list(nombre_actividad1 = 
+                                   c("ttt", "eee", "xx", "xxx", "XXX", "XX")))
+                                   
+sum(is.na(PME2019$nombre_actividad1))
+
+
+##Eliminación de filas con NA en la var. Nombre actividad
+
+PME2019 <- PME2019[!(is.na(PME2019$nombre_actividad1)), ]
+
+# pasar a minuscula
+
+PME2019$nombre_actividad1 <- tolower(PME2019$nombre_actividad1)
+PME2019$descripcion_actividad1 <- tolower(PME2019$descripcion_actividad1)
+
+### Reeemplazar tildes 
+
+PME2019$nombre_actividad1 <- str_replace_all(PME2019$nombre_actividad1, 
+                                             c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                               "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                               "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                               "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                               "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+
+PME2019$descripcion_actividad1 <- str_replace_all(PME2019$descripcion_actividad1, 
+                                                  c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                                    "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                                    "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                                    "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                                    "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+
+##división BD 2019
+
+PME2019_CE <- PME2019 %>%
+  filter(dimension1 == "Convivencia Escolar")
+
+PME2019_GR <- PME2019 %>%
+  filter(dimension1 == "Gestión de Recursos")
+
+PME2019_GP <- PME2019 %>%
+  filter(dimension1 == "Gestión Pedagógica")
+
+PME2019_L <- PME2019 %>%
+  filter(dimension1 == "Liderazgo")
+                    
