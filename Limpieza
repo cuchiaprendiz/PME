@@ -1,45 +1,64 @@
 library(tidyverse)
 library(readxl)
-library(naniar)
-library(stringr)
 
-###Base PME2017
+### Limpieza base PME2017
 
 PME2017 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2017.xlsx")
-
-#### Limpieza base PME2017
 
 #Asignar NA cuando no hay acción escrita en nombre_actividad1
 
 # https://cran.r-project.org/web/packages/naniar/vignettes/replace-with-na.html
 
+library(naniar)
 PME2017 <- PME2017 %>%
   replace_with_na(replace = list(nombre_actividad1 = 
-                                   c("no hay acción", "objetivo no se ocupará", 
-                                     "objetivo no se utilizará",
+                                   c("no hay acción", "No hay Acción", "NO HAY ACCIÓN",	"No hay acción", "no hay acción",
+                                     "sin acción", "sin  acción", "sin accion 2", "sin acción 2", "Sin acción", "Sin Acción",
+                                     "objetivo no se ocupará", "objetivo no se utilizará", "No se abordará", 
                                      "No existe estrategia para realizar acción error de digitación", 
-                                     "sin acción", "- No procede.", "- No aplica.", 
-                                     "- Estrategia no aplica.", "- Estrategia no corresponde.", 
-                                     "- Estrategia no procede.", "..", ".", "ERROR SISTEMA", 
-                                     "error de plataforma", "REPETIDO", "REPETIDO1", "no hay acción", 
-                                     "- Repite Estrategia. No procede.", "0000", "000", "00", "0", 
-                                     "000000", "00000", "ERROR DEL SISTEMA", "ERROR DE SISTEMA", 
-                                     "ERRO DEL SISTEMA", "ERROR EN EL SISTEMA", "ERROR", 
-                                     "ERROR SISTEMA DOS", "ERROR EN EL SISTEMA.", 
-                                     "ERROR EN EL SISTEMA DOS", "ERROR DOS", "....", ".......", 
-                                     "ggg",	 "fff",	"vvv",	 "xxx",	 "mmm", "lll", "nnn", 
-                                     "-------", "------", "pppppp pp", "ooo oo", "xxxx", "sss  sssss", 
-                                     "xxxxxx", "xxxxxx  xx   xxxx", ".-", ".-.", "-", 
-                                     "error de digitación", "Error de digitación", "No hay Acción",	
-                                     "NO HAY ACCIÓN",	"No hay acción",	"XXXX",	"XXX",	"XXXXXX",	
-                                     "MMM",	"NNN",	"ERRor",	"Error",	"Error de sistema",	
-                                     "error sistema",	"ERROR DE PLATAFORMA")))
+                                     "No corresponde redactar acción por no poder eliminar estrategia anual",
+                                     "Aquí no hay acción  por error se digito en esta Dimensión un punto(.) lo que ha provocado esto.",
+                                    "sin nombre", "Sin información", "No corresponde", "- No procede.", 
+                                    "- No aplica.", "no aplica", "no aplica.", "No aplica", "No aplica_1", 
+                                    "no aplica_1", "No aplica2", "No aplica 3", "No aplica 4", "No aplica 5",
+                                    "No aplica 6", "No aplica 7", "No aplica 8", "No aplica 9", "NO APLICA", "no aplica 3",
+                                    "no apl,ica 4", "No hay aplicabilidad", "Duplicidad", "Duplicidad1", "duplicidad",
+                                     "- Estrategia no aplica.", "- Estrategia no corresponde.", "- Estrategia no procede.", 
+                                    "estrategia repetida", "estrategia que se repite", "Estrategia no corresponde",
+                                     "REPETIDO", "REPETIDO1", "IDEM A LA ANTERIOR", "DOS VECES", "Acción acción", "Acción 2",
+                                    "Acción (vacío)", "Acción vacía1", "Acción vacía2", "Acción vacía3", "Acción vacío4",
+                                    "objetivo repetido anteriormente", "- Repite Estrategia. No procede.", 
+                                     "error de plataforma","ERROR DE PLATAFORMA", "ERROR SISTEMA", 
+                                     "error sistema", "ERROR DEL SISTEMA", "ERROR DE SISTEMA", 
+                                     "ERRO DEL SISTEMA", "ERROR EN EL SISTEMA", "ERROR", "ERROR SISTEMA DOS", 
+                                     "ERROR EN EL SISTEMA.", "ERROR EN EL SISTEMA DOS", "ERROR DOS", "ERRor",	"Error",	
+                                     "Error de sistema", "error de digitación", "Error de digitación", 
+                                     "DIFICULTAD DEL SISTEMA", "sin descripcion", "Sin aplicabilidad en PME",
+                                    "0", "00", "000", "0000", "00000", "000000", "05", "5", "0,", "0'", "02","021", "1", "2",
+                                     ",", ",,", ",.,","..,", ".,", "./",".", "..", "...", "....",".....", "......", ".......", 
+                                     "-", ".-", ".-.", "-.-", "-------", "------", ".............", "c", "i", "'",
+                                     "ggg",	 "fff",	"vvv", "mmm", "lll", "nnn", "pppppp pp", "ooo oo", "sss  sssss", 
+                                     "x", "xxx", "xxxx", "xxxxxx", "xxxxxx  xx   xxxx",	"XXX", "XXXX", "XXXXXX",
+                                     "MMM",	"NNN")))
 
 sum(is.na(PME2017$nombre_actividad1))
+
 
 ##Eliminación de filas con NA en la var. Nombre actividad
 
 PME2017 <- PME2017[!(is.na(PME2017$nombre_actividad1)), ]
+
+#Asignar NA cuando no hay descripción de acción en descripcion_actividad1
+
+PME2017 <- PME2017 %>%
+  replace_with_na(replace = list(descripcion_actividad1 = 
+                                   c("Sin descripción", "No aplica", "no aplica",
+                                     ".", "..", "...",
+                                     "a", "ooo", 
+                                     "x", "xx", "xxx")))
+
+sum(is.na(PME2017$descripcion_actividad1))
+
 
 ###Para normalizar el texto se puede usar "Latin-ASCII", sin embargo también elimina las "ñ".
     #library("stringi")
@@ -54,6 +73,7 @@ PME2017$nombre_actividad1 <- tolower(PME2017$nombre_actividad1)
 PME2017$descripcion_actividad1 <- tolower(PME2017$descripcion_actividad1)
 
     # Reeemplazar tildes y otros caracteres
+library(stringr)
 
 PME2017$nombre_actividad1 <- str_replace_all(PME2017$nombre_actividad1, 
                                                   c("á"="a", "à"="a", "ä"="a", "â"="a",
@@ -96,11 +116,11 @@ PME2017_GP <- PME2017 %>%
 PME2017_L <- PME2017 %>%
   filter(dimension1 == "Liderazgo")
 
-###Base PME2018
+
+
+### Limpieza base PME2018
 
 PME2018 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2018.xlsx")
-
-#### Limpieza base PME2018
 
 #Asignar NA cuando no hay acción escrita en nombre_actividad1
 
@@ -162,12 +182,10 @@ PME2018_L <- PME2018 %>%
   filter(dimension1 == "Liderazgo")
 
 
-### PME2019
 
+
+### Limpieza base PME2018
 PME2019 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2019.xlsx")
-
-
-#### Limpieza base PME2018
 
 #Asignar NA cuando no hay acción escrita en nombre_actividad1
 
@@ -218,4 +236,6 @@ PME2019_GP <- PME2019 %>%
 
 PME2019_L <- PME2019 %>%
   filter(dimension1 == "Liderazgo")
-                    
+
+
+
