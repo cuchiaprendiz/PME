@@ -223,9 +223,14 @@ PME2017_L <- PME2017 %>%
   filter(dimension1 == "Liderazgo")
   
 
+### Creación de variable correlativa
+
+Folio <- rownames(PME2017_CE)
+PME2017_CE <- cbind(Folio=Folio, PME2017_CE)
+
+
 #######################################################################
 ########                      ANALISIS             ####################
-
 
 ### UDPipe Natural Language Processing - Basic Analytical Use Cases
 
@@ -250,12 +255,13 @@ stats$key <- factor(stats$key, levels = rev(stats$key))
 #         main = "Nombre actividad 
 #        Convivencia Escolar 2017", 
 #       xlab = "Frecuencia")
+
 #Análisis. 
 #Basic frequency statistics UPOS
 
-stats <- txt_freq(x$upos)
-stats$key <- factor(stats$key, levels = rev(stats$key))
-barchart(key ~ freq, data = stats, col = "cadetblue", 
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
          main = "UPOS (Universal Parts of Speech)\n Frecuencia Nombre actividad CE 2017", 
          xlab = "Frecuencia")
 
@@ -268,11 +274,21 @@ barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue",
          main = "Sustantivos más frecuentes", xlab = "Frecuencia")
 
 ## ADJECTIVES
+
 stats_adj <- subset(x, upos %in% c("ADJ")) 
 stats_adj <- txt_freq(stats_adj$token)
 stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
 barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
          main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
 
 ### Palabras claves 3 métodos
 
@@ -317,8 +333,8 @@ library(ggplot2)
 wordnetwork <- head(cooc, 30)
 wordnetwork <- graph_from_data_frame(wordnetwork)
 ggraph(wordnetwork, layout = "fr") +
-  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "pink") +
-  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
   theme_graph(base_family = "Arial Narrow") +
   theme(legend.position = "none") +
   labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
@@ -328,9 +344,6 @@ ggraph(wordnetwork, layout = "fr") +
 cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
 head(cooc)
 
-library(igraph)
-library(ggraph)
-library(ggplot2)
 wordnetwork <- head(cooc, 15)
 wordnetwork <- graph_from_data_frame(wordnetwork)
 ggraph(wordnetwork, layout = "fr") +
@@ -352,7 +365,3 @@ y <- as_cooccurrence(termcorrelations)
 y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
 y <- y[order(abs(y$cooc), decreasing = TRUE), ]
 head(y)
-  
-  
-  
-  
