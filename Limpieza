@@ -221,3 +221,138 @@ PME2017_GP <- PME2017 %>%
 
 PME2017_L <- PME2017 %>%
   filter(dimension1 == "Liderazgo")
+  
+
+#######################################################################
+########                      ANALISIS             ####################
+
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2017_CE$nombre_actividad1, doc_id = PME2017_CE$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2017_CE$nombre_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2017", 
+#       xlab = "Frecuencia")
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats <- txt_freq(x$upos)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+barchart(key ~ freq, data = stats, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Nombre actividad CE 2017", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                       relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                          pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                          is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "pink") +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+  
+  
+  
+  
