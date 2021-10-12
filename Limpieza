@@ -14,35 +14,71 @@ PME2017 <- PME2017 %>%
   replace_with_na(replace = list(nombre_actividad1 = 
                                    c("no hay acción", "No hay Acción", "NO HAY ACCIÓN",	"No hay acción", "no hay acción",
                                      "sin acción", "sin  acción", "sin accion 2", "sin acción 2", "Sin acción", "Sin Acción",
-                                     "objetivo no se ocupará", "objetivo no se utilizará", "No se abordará", 
+                                     "Sin Accion","2. Sin accion", "1Sin accion", "No ejecutada", "No implementada",
+                                     "objetivo no se ocupará", "objetivo no se utilizará", "NO HAY ESTRATEGIA ABORDADA",
+                                     "No se abordará", "No se abordará." ,"NO SE ABORDARA Estrategia", 
+                                     "NO HAY ESTRATEGIA Abordada", "NO SE ABORDARA ESTRATEGIA",
+                                    "NO Considerar Estrategia", "NO CONSIDERAR Estrategia",
+                                     "NO SE PUEDE ABORDAR Estrategia","NO SE PUEDE ABORDAR ESTRATEGIA",
+                                     "No se puede Abordar Estrategia", "No se puede abordar Estrategia", 
+                                     "ESTRATEGIA NO ABORDABLE", "ESTRATEGIA NO Abordable", "Estrategia no se ABORDARA",
+                                     "Estrategia no abordada", "estrategia no abordada", "Estrategia No Abordada",
+                                     "ESTRATEGIA no abordada", "Estrategia no se ABORDADA", "No abordada", "No abordado",
+                                     "ESTRATEGIA NO se abordara", "estrategia no será abordada", "Sin aplicación",
                                      "No existe estrategia para realizar acción error de digitación", 
                                      "No corresponde redactar acción por no poder eliminar estrategia anual",
                                      "Aquí no hay acción  por error se digito en esta Dimensión un punto(.) lo que ha provocado esto.",
-                                     "sin nombre", "Sin información", "No corresponde", "- No procede.", 
-                                     "- No aplica.", "no aplica", "no aplica.", "No aplica", "No aplica_1", 
-                                     "no aplica_1", "No aplica2", "No aplica 3", "No aplica 4", "No aplica 5",
-                                     "No aplica 6", "No aplica 7", "No aplica 8", "No aplica 9", "NO APLICA", "no aplica 3",
-                                     "no apl,ica 4", "No hay aplicabilidad", "Duplicidad", "Duplicidad1", "duplicidad",
+                                     "Sin segundo sello", "Sin aplicabilidad en PME", "Inaplicable", "Sin contexto",
+                                     "sin nombre", "Sin información", "sin indicador", "No existe estrategia",
+                                     "No corresponde", "- No procede.", "no indicador", "No Aplica en U. Educativa",
+                                     "- No aplica.", "no aplica", "no aplica.", "No aplica", "NO APLICA", "Aplica",
+                                    "NO aplica", "no APLICA", "no es aplicable", "No aplica acción","No aplica esta acción",
+                                     "No aplica_1", "no aplica_1", "No aplica 1", "No aplica001", "No aplica1", "no aplica 1",
+                                     "No aplica 2", "No aplica2", "no aplica 2", "no aplica2",
+                                     "No aplica 3", "no aplica 3", "No aplica3",
+                                     "No aplica 4", "no apl,ica 4", "No aplica4", "No aplica 5", "no aplica 5",
+                                     "No aplica 6", "no aplica 6", 
+                                     "No aplica 7", "no aplica 7",
+                                     "No aplica 8", "no aplica8", "no aplica 8",
+                                     "No aplica 9", "no aplica 9",
+                                     "No aplica 10", "no aplica 10",
+                                     "no aplica 11", "No aplica 11","aplica 11",
+                                     "No hay aplicabilidad", "Duplicidad", "Duplicidad1", "duplicidad",
                                      "- Estrategia no aplica.", "- Estrategia no corresponde.", "- Estrategia no procede.", 
                                      "estrategia repetida", "estrategia que se repite", "Estrategia no corresponde",
                                      "REPETIDO", "REPETIDO1", "IDEM A LA ANTERIOR", "DOS VECES", 
                                      "Acción acción", "Acción 1", "Acción 2", "acción", "accion",
                                      "Acción (vacío)", "Acción vacía1", "Acción vacía2", "Acción vacía3", "Acción vacío4",
                                      "objetivo repetido anteriormente", "- Repite Estrategia. No procede.", 
+                                    "Error de Tipeo","Error de tipeo.",
                                      "error de plataforma","ERROR DE PLATAFORMA", "ERROR SISTEMA", 
                                      "error sistema", "ERROR DEL SISTEMA", "ERROR DE SISTEMA", 
-                                     "Error de plataforma 10", "Nada",
+                                     "Error de plataforma 10", "Nada", "Con error", "No hay coherencia",
+                                     "Indicado por apoyo sep", "Según apoyosep","Informado a apoyosep", "Sugerido por apoyosep",
+                                     "Instrucción por correo", "Indicado por apoyosep", "Error fase, informado a apoyosep",
+                                     "Error fase estratégica, informado apoyosep", "Error informado a apoyosep",
+                                     "Error en planificación, informado a apoyosep", "Error en la planificación estratégica",
                                      "ERRO DEL SISTEMA", "ERROR EN EL SISTEMA", "ERROR", "ERROR SISTEMA DOS", 
                                      "ERROR EN EL SISTEMA.", "ERROR EN EL SISTEMA DOS", "ERROR DOS", "ERRor",	"Error",	
                                      "Error de sistema", "error de digitación", "Error de digitación", 
                                      "DIFICULTAD DEL SISTEMA", "sin descripcion", "Sin aplicabilidad en PME",
-                                     "0", "00", "000", "0000", "00000", "000000", "05", "5", "0,", "0'", "02","021", "1", "2",
-                                     ",", ",,", ",.,","..,", ".,", "./",".", "..", "...", "....",".....", "......", ".......", 
-                                     "-", ".-", ".-.", "-.-", "-------", "------", ".............", "c", "i", "'",
-                                     "ggg",	"fff", "vvv", "yyy", "mmm", "ll", "lll", "nnn", "ñl", "ty", "tyu",
-                                     "pppppp pp", "ooo oo", "sss  sssss", "II", "III", "c",
-                                     "x", "xxx", "xxxx", "xxxxx", "xxxxxx", "xxxxxxxxx", "xxxxxx  xx   xxxx",	
-                                     "XXX", "XXXX", "XXXXXX", "MMM", "NNN")))
+                                     "0", "00", "000", "0000", "00000", "000000", "05", "5", "0,", "0'", 
+                                    "02","021", "1", "2", "3", "4", "5","6","7","8","9","10","66666666666666666",
+                                     ",", ",,", ",,,",",.,","..,", ".,", "./",".", "..", "...", "....",".....", "......", ".......", 
+                                     "-", "--", ".-", ",.-",",.--.","-----.",".-.", ",.-.", "-.-", "-------", "------", ".............", "'", 
+                                     "fff", "Eeee", "ggg", "vvv", "mmm", "ll", "lll", "nnn", "ñl", "ty", "tyu",
+                                     "pppppp pp", "ooo oo", "sss  sssss", "II", "III", 
+                                    "a","b","c","ç","d","e","f", "g","h","i", "j","k","l","m","n","o","q","p","r","s","t","u",
+                                    "y","z","yyy", "yy", "yx", "x", "xx",
+                                     "xxx", "xxxx", "xxxxx", "xxxxxx", "xxxxxxxx", "xxxxxxxxx", "xxxxxxxxxx",
+                                     "xxxxxxxxvv", "pppppppppppppppp", "wwwwwww","ddddddddddddd", 
+                                     "eeeeeeeeeee","sssssssss","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxx",
+                                     "xxxxxxxxxxxxx", "cccccccccc", "xxxl", "xxyy", "xxxxxx  xx   xxxx",	
+                                     "yyyy","w", "XXX", "XXXX", "XXXXXX", "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                                    "MMM", "NNN","oo", "OOO","OO", "bb", "aaa", "cc", "ssn", "zs", "sxz", "nnzx", "ooo",
+                                    "uno", "dos", "tres", "cuatro","cinco","seis","siete","ocho","nueve","diez",
+                                     "Niiimnbhgt", "mnbhgt", "jmjoiug", "nnnnnnnnnnnnnnnn", "mnjhbgty",
+                                    "mmnnjhu", "nbvcf")))
 
 sum(is.na(PME2017$nombre_actividad1))
 
@@ -55,10 +91,73 @@ PME2017 <- PME2017[!(is.na(PME2017$nombre_actividad1)), ]
 
 PME2017 <- PME2017 %>%
   replace_with_na(replace = list(descripcion_actividad1 = 
-                                   c("Sin descripción", "No aplica", "no aplica",
-                                     ".", "..", "...",
-                                     "a", "ooo", 
-                                     "x", "xx", "xxx")))
+                                   c("no hay acción", "No hay Acción", "NO HAY ACCIÓN",	"No hay acción", "no hay acción",
+                                     "sin acción", "sin  acción", "sin accion 2", "sin acción 2", "Sin acción", "Sin Acción",
+                                     "Sin Accion","2. Sin accion", "1Sin accion", "No ejecutada", "No implementada",
+                                     "objetivo no se ocupará", "objetivo no se utilizará", "NO HAY ESTRATEGIA ABORDADA",
+                                     "No se abordará", "No se abordará." ,"NO SE ABORDARA Estrategia", 
+                                     "NO HAY ESTRATEGIA Abordada", "NO SE ABORDARA ESTRATEGIA",
+                                     "NO Considerar Estrategia", "NO CONSIDERAR Estrategia",
+                                     "NO SE PUEDE ABORDAR Estrategia","NO SE PUEDE ABORDAR ESTRATEGIA",
+                                     "No se puede Abordar Estrategia", "No se puede abordar Estrategia", 
+                                     "ESTRATEGIA NO ABORDABLE", "ESTRATEGIA NO Abordable", "Estrategia no se ABORDARA",
+                                     "Estrategia no abordada", "estrategia no abordada", "Estrategia No Abordada",
+                                     "ESTRATEGIA no abordada", "Estrategia no se ABORDADA", "No abordada", "No abordado",
+                                     "ESTRATEGIA NO se abordara", "estrategia no será abordada", "Sin aplicación",
+                                     "No existe estrategia para realizar acción error de digitación", 
+                                     "No corresponde redactar acción por no poder eliminar estrategia anual",
+                                     "Aquí no hay acción  por error se digito en esta Dimensión un punto(.) lo que ha provocado esto.",
+                                     "Sin segundo sello", "Sin aplicabilidad en PME", "Inaplicable", "Sin contexto",
+                                     "sin nombre", "Sin información", "sin indicador", "No existe estrategia",
+                                     "No corresponde", "- No procede.", "no indicador", "No Aplica en U. Educativa",
+                                     "- No aplica.", "no aplica", "no aplica.", "No aplica", "NO APLICA", "Aplica",
+                                     "NO aplica", "no APLICA", "no es aplicable", "No aplica acción","No aplica esta acción",
+                                     "No aplica_1", "no aplica_1", "No aplica 1", "No aplica001", "No aplica1", "no aplica 1",
+                                     "No aplica 2", "No aplica2", "no aplica 2", "no aplica2",
+                                     "No aplica 3", "no aplica 3", "No aplica3",
+                                     "No aplica 4", "no apl,ica 4", "No aplica4", "No aplica 5", "no aplica 5",
+                                     "No aplica 6", "no aplica 6", 
+                                     "No aplica 7", "no aplica 7",
+                                     "No aplica 8", "no aplica8", "no aplica 8",
+                                     "No aplica 9", "no aplica 9",
+                                     "No aplica 10", "no aplica 10",
+                                     "no aplica 11", "No aplica 11","aplica 11",
+                                     "No hay aplicabilidad", "Duplicidad", "Duplicidad1", "duplicidad",
+                                     "- Estrategia no aplica.", "- Estrategia no corresponde.", "- Estrategia no procede.", 
+                                     "estrategia repetida", "estrategia que se repite", "Estrategia no corresponde",
+                                     "REPETIDO", "REPETIDO1", "IDEM A LA ANTERIOR", "DOS VECES", 
+                                     "Acción acción", "Acción 1", "Acción 2", "acción", "accion",
+                                     "Acción (vacío)", "Acción vacía1", "Acción vacía2", "Acción vacía3", "Acción vacío4",
+                                     "objetivo repetido anteriormente", "- Repite Estrategia. No procede.", 
+                                     "Error de Tipeo","Error de tipeo.",
+                                     "error de plataforma","ERROR DE PLATAFORMA", "ERROR SISTEMA", 
+                                     "error sistema", "ERROR DEL SISTEMA", "ERROR DE SISTEMA", 
+                                     "Error de plataforma 10", "Nada", "Con error", "No hay coherencia",
+                                     "Indicado por apoyo sep", "Según apoyosep","Informado a apoyosep", "Sugerido por apoyosep",
+                                     "Instrucción por correo", "Indicado por apoyosep", "Error fase, informado a apoyosep",
+                                     "Error fase estratégica, informado apoyosep", "Error informado a apoyosep",
+                                     "Error en planificación, informado a apoyosep", "Error en la planificación estratégica",
+                                     "ERRO DEL SISTEMA", "ERROR EN EL SISTEMA", "ERROR", "ERROR SISTEMA DOS", 
+                                     "ERROR EN EL SISTEMA.", "ERROR EN EL SISTEMA DOS", "ERROR DOS", "ERRor",	"Error",	
+                                     "Error de sistema", "error de digitación", "Error de digitación", 
+                                     "DIFICULTAD DEL SISTEMA", "sin descripcion", "Sin aplicabilidad en PME",
+                                     "0", "00", "000", "0000", "00000", "000000", "05", "5", "0,", "0'", 
+                                     "02","021", "1", "2", "3", "4", "5","6","7","8","9","10","66666666666666666",
+                                     ",", ",,", ",,,",",.,","..,", ".,", "./",".", "..", "...", "....",".....", "......", ".......", 
+                                     "-", "--", ".-", ",.-",",.--.","-----.",".-.", ",.-.", "-.-", "-------", "------", ".............", "'", 
+                                     "fff", "Eeee", "ggg", "vvv", "mmm", "ll", "lll", "nnn", "ñl", "ty", "tyu",
+                                     "pppppp pp", "ooo oo", "sss  sssss", "II", "III", 
+                                     "a","b","c","ç","d","e","f", "g","h","i", "j","k","l","m","n","o","q","p","r","s","t","u",
+                                     "y","z","yyy", "yy", "yx", "x", "xx",
+                                     "xxx", "xxxx", "xxxxx", "xxxxxx", "xxxxxxxx", "xxxxxxxxx", "xxxxxxxxxx",
+                                     "xxxxxxxxvv", "pppppppppppppppp", "wwwwwww","ddddddddddddd", 
+                                     "eeeeeeeeeee","sssssssss","xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxx",
+                                     "xxxxxxxxxxxxx", "cccccccccc", "xxxl", "xxyy", "xxxxxx  xx   xxxx",	
+                                     "yyyy","w", "XXX", "XXXX", "XXXXXX", "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                                     "MMM", "NNN","oo", "OOO","OO", "bb", "aaa", "cc", "ssn", "zs", "sxz", "nnzx", "ooo",
+                                     "uno", "dos", "tres", "cuatro","cinco","seis","siete","ocho","nueve","diez",
+                                     "Niiimnbhgt", "mnbhgt", "jmjoiug", "nnnnnnnnnnnnnnnn", "mnjhbgty",
+                                     "mmnnjhu", "nbvcf")))
 
 sum(is.na(PME2017$descripcion_actividad1))
 
@@ -85,6 +184,10 @@ PME2017$nombre_actividad1 <- str_replace_all(PME2017$nombre_actividad1,
                                                     "ó"="o", "ò"="o", "ö"="o", "ô"="o",
                                                     "ú"="u", "ù"="u", "ü"="u", "û"="u"))
 
+
+PME2017$nombre_actividad1 <- str_replace_all(PME2017$nombre_actividad1, c("[.]$" = "") ) 
+
+                                             
 PME2017$descripcion_actividad1 <- str_replace_all(PME2017$descripcion_actividad1, 
                                                   c("á"="a", "à"="a", "ä"="a", "â"="a",
                                                     "é"="e", "è"="e", "ë"="e", "ê"="e",
@@ -118,127 +221,3 @@ PME2017_GP <- PME2017 %>%
 
 PME2017_L <- PME2017 %>%
   filter(dimension1 == "Liderazgo")
-
-
-
-### Limpieza base PME2018
-
-PME2018 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2018.xlsx")
-
-#Asignar NA cuando no hay acción escrita en nombre_actividad1
-
-PME2018 <- PME2018 %>%
-  replace_with_na(replace = list(nombre_actividad1 = 
-                                   c("No hay acción",	"No  hay   Acción error de digitación",	
-                                     "Error de Estrategia",	"Error en la Estrategia 2",	".....",	
-                                     "....",	"..",	".",	"00000",	"0000",	"000",	"0000000",	"000000",	
-                                     "HHHHH",	"zzzzzzzzzzzz",	"xx",	"zzzzz",	"nnnnnnnn",	"hps",	"xxxx",	
-                                     "xxx",	"xxxxxxxxxxxxxxxxxxxxxx",	"..................................",	
-                                     "xxxxxxxxxxxxxxx",	"...................................",	
-                                     "xxxxxxxxxxxxxxxx",	"xxxxxxxxxxxxxxxxxx",	"no hay acción",
-                                     ".................................",	"xxxxxxxxxxxxxxxxxxxxx",	
-                                     "xxxxxxxxxxxxxxxxx",	"ttttttttttttttttttttttt",	
-                                     "xxxxxxxxxxxxxxxxxxxxxxxxx",	"xxxxxxxxx",	"........................",	
-                                     ".....................................",	"r",	"z", "XXXXXXXXXXXXXXXX", 
-                                     "XXXXXXXXXXXXXXXXXX","XXXXXXXXXXXXXXX", "XXX", "XX", "XXXX", "XXXXXXXXX")))
-
-sum(is.na(PME2018$nombre_actividad1))
-
-##Eliminación de filas con NA en la var. Nombre actividad
-
-PME2018 <- PME2018[!(is.na(PME2018$nombre_actividad1)), ]
-
-# pasar a minuscula
-
-PME2018$nombre_actividad1 <- tolower(PME2018$nombre_actividad1)
-PME2018$descripcion_actividad1 <- tolower(PME2018$descripcion_actividad1)
-
-### Reeemplazar tildes 
-
-PME2018$nombre_actividad1 <- str_replace_all(PME2018$nombre_actividad1, 
-                                             c("á"="a", "à"="a", "ä"="a", "â"="a",
-                                               "é"="e", "è"="e", "ë"="e", "ê"="e",
-                                               "í"="i", "ì"="i", "ï"="i", "î"="i",
-                                               "ó"="o", "ò"="o", "ö"="o", "ô"="o",
-                                               "ú"="u", "ù"="u", "ü"="u", "û"="u"))
-
-
-PME2018$descripcion_actividad1 <- str_replace_all(PME2018$descripcion_actividad1, 
-                                                  c("á"="a", "à"="a", "ä"="a", "â"="a",
-                                                    "é"="e", "è"="e", "ë"="e", "ê"="e",
-                                                    "í"="i", "ì"="i", "ï"="i", "î"="i",
-                                                    "ó"="o", "ò"="o", "ö"="o", "ô"="o",
-                                                    "ú"="u", "ù"="u", "ü"="u", "û"="u"))
-
-##división BD 2018
-
-PME2018_CE <- PME2018 %>%
-  filter(dimension1 == "Convivencia Escolar")
-
-PME2018_GR <- PME2018 %>%
-  filter(dimension1 == "Gestión de Recursos")
-
-PME2018_GP <- PME2018 %>%
-  filter(dimension1 == "Gestión Pedagógica")
-
-PME2018_L <- PME2018 %>%
-  filter(dimension1 == "Liderazgo")
-
-
-
-
-### Limpieza base PME2018
-PME2019 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2019.xlsx")
-
-#Asignar NA cuando no hay acción escrita en nombre_actividad1
-
-PME2019 <- PME2019 %>%
-  replace_with_na(replace = list(nombre_actividad1 = 
-                                   c("ttt", "eee", "xx", "xxx", "XXX", "XX")))
-                                   
-sum(is.na(PME2019$nombre_actividad1))
-
-
-##Eliminación de filas con NA en la var. Nombre actividad
-
-PME2019 <- PME2019[!(is.na(PME2019$nombre_actividad1)), ]
-
-# pasar a minuscula
-
-PME2019$nombre_actividad1 <- tolower(PME2019$nombre_actividad1)
-PME2019$descripcion_actividad1 <- tolower(PME2019$descripcion_actividad1)
-
-### Reeemplazar tildes 
-
-PME2019$nombre_actividad1 <- str_replace_all(PME2019$nombre_actividad1, 
-                                             c("á"="a", "à"="a", "ä"="a", "â"="a",
-                                               "é"="e", "è"="e", "ë"="e", "ê"="e",
-                                               "í"="i", "ì"="i", "ï"="i", "î"="i",
-                                               "ó"="o", "ò"="o", "ö"="o", "ô"="o",
-                                               "ú"="u", "ù"="u", "ü"="u", "û"="u"))
-
-
-PME2019$descripcion_actividad1 <- str_replace_all(PME2019$descripcion_actividad1, 
-                                                  c("á"="a", "à"="a", "ä"="a", "â"="a",
-                                                    "é"="e", "è"="e", "ë"="e", "ê"="e",
-                                                    "í"="i", "ì"="i", "ï"="i", "î"="i",
-                                                    "ó"="o", "ò"="o", "ö"="o", "ô"="o",
-                                                    "ú"="u", "ù"="u", "ü"="u", "û"="u"))
-
-
-##división BD 2019
-
-PME2019_CE <- PME2019 %>%
-  filter(dimension1 == "Convivencia Escolar")
-
-PME2019_GR <- PME2019 %>%
-  filter(dimension1 == "Gestión de Recursos")
-
-PME2019_GP <- PME2019 %>%
-  filter(dimension1 == "Gestión Pedagógica")
-
-PME2019_L <- PME2019 %>%
-  filter(dimension1 == "Liderazgo")
-
-
-
