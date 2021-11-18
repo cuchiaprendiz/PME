@@ -1,0 +1,1338 @@
+library(tidyverse)
+library(readxl)
+
+### Limpieza base PME2018
+
+PME2018 <- read_xlsx("/Users/aliciaibanez/Documents/1. ASIDES/DOC/BD/imp2018.xlsx")
+
+#Asignar NA cuando no hay acción escrita en nombre_actividad1
+
+library(naniar)
+PME2018 <- PME2018 %>%
+  replace_with_na(replace = list(nombre_actividad1 = 
+                                   c("no hay acción", "No hay Acción", "NO HAY ACCIÓN", "No hay acción", "no hay acción",
+                                     "sin acción", "sin  acción", "sin accion 2", "sin acción 2", "Sin acción", "Sin Acción",
+                                     "Sin Accion","2. Sin accion", "1Sin accion", "No ejecutada", "No implementada",
+                                     "objetivo no se ocupará", "objetivo no se utilizará", "NO HAY ESTRATEGIA ABORDADA",
+                                     "No se abordará", "No se abordará." ,"NO SE ABORDARA Estrategia", 
+                                     "NO HAY ESTRATEGIA Abordada", "NO SE ABORDARA ESTRATEGIA",
+                                     "NO Considerar Estrategia", "NO CONSIDERAR Estrategia",
+                                     "NO SE PUEDE ABORDAR Estrategia","NO SE PUEDE ABORDAR ESTRATEGIA",
+                                     "No se puede Abordar Estrategia", "No se puede abordar Estrategia", 
+                                     "ESTRATEGIA NO ABORDABLE", "ESTRATEGIA NO Abordable", "Estrategia no se ABORDARA",
+                                     "Estrategia no abordada", "estrategia no abordada", "Estrategia No Abordada",
+                                     "ESTRATEGIA no abordada", "Estrategia no se ABORDADA", "No abordada", "No abordado",
+                                     "ESTRATEGIA NO se abordara", "estrategia no será abordada", "Sin aplicación",
+                                     "No existe estrategia para realizar acción error de digitación", 
+                                     "No corresponde redactar acción por no poder eliminar estrategia anual",
+                                     "Aquí no hay acción  por error se digito en esta Dimensión un punto(.) lo que ha provocado esto.",
+                                     "Sin segundo sello", "Sin aplicabilidad en PME", "Inaplicable", "Sin contexto",
+                                     "sin nombre", "Sin información", "sin indicador", "No existe estrategia",
+                                     "No corresponde", "- No procede.", "no indicador", "No Aplica en U. Educativa",
+                                     "- No aplica.", "no aplica", "no aplica.", "No aplica", "NO APLICA", "Aplica",
+                                     "NO aplica", "no APLICA", "no es aplicable", "No aplica acción","No aplica esta acción",
+                                     "No aplica 1", "no aplica 1", "No aplica1", "no aplica1","No aplica_1", "no aplica_1", "No aplica001",
+                                     "No aplica 2", "no aplica 2", "No aplica2", "no aplica2",
+                                     "No aplica 3", "no aplica 3", "No aplica3", "no aplica3",
+                                     "No aplica 4", "no aplica 4", "No aplica4", "no aplica4","no apl,ica 4",
+                                     "No aplica 5", "no aplica 5", "No aplica5", "no aplica5",
+                                     "No aplica 6", "no aplica 6", "No aplica6", "no aplica6",
+                                     "No aplica 7", "no aplica 7", "No aplica7", "no aplica7",
+                                     "No aplica 8", "no aplica 8", "No aplica8", "no aplica8",
+                                     "No aplica 9", "no aplica 9", "No aplica9", "no aplica9",
+                                     "No aplica 10", "no aplica 10", "No aplica10", "no aplica10",
+                                     "No aplica 11", "no aplica 11", "No aplica11", "no aplica11", "aplica 11",
+                                     "No hay aplicabilidad", "Duplicidad", "Duplicidad1", "duplicidad",
+                                     "- Estrategia no aplica.", "- Estrategia no corresponde.", "- Estrategia no procede.", 
+                                     "estrategia repetida", "estrategia que se repite", "Estrategia no corresponde",
+                                     "REPETIDO", "REPETIDO1", "IDEM A LA ANTERIOR", "DOS VECES", 
+                                     "Acción acción", "Acción 1", "Acción 2", "acción", "accion",
+                                     "Acción (vacío)", "Acción vacía1", "Acción vacía2", "Acción vacía3", "Acción vacío4",
+                                     "objetivo repetido anteriormente", "- Repite Estrategia. No procede.", 
+                                     "Error de Tipeo","Error de tipeo.",
+                                     "error de plataforma","ERROR DE PLATAFORMA", "Error de plataforma 10",
+                                     "error sistema", "ERROR DEL SISTEMA", "ERROR DE SISTEMA", "ERROR SISTEMA", 
+                                     "Nada", "Con error", "No hay coherencia",
+                                     "Indicado por apoyo sep", "Según apoyosep","Informado a apoyosep", "Sugerido por apoyosep",
+                                     "Instrucción por correo", "Indicado por apoyosep", "Error fase, informado a apoyosep",
+                                     "Error fase estratégica, informado apoyosep", "Error informado a apoyosep",
+                                     "Error en planificación, informado a apoyosep", "Error en la planificación estratégica",
+                                     "ERRO DEL SISTEMA", "ERROR EN EL SISTEMA", "ERROR", "ERROR SISTEMA DOS", 
+                                     "ERROR EN EL SISTEMA.", "ERROR EN EL SISTEMA DOS", "ERROR DOS", "ERRor", "Error",
+                                     "Error de sistema", "error de digitación", "Error de digitación", 
+                                     "DIFICULTAD DEL SISTEMA", "sin descripcion", "Sin aplicabilidad en PME",
+                                     "0", "00", "000", "0000", "00000", "000000", "05", "5", "0,", "0'", 
+                                     "02","021", "1", "2", "3", "4", "5","6","7","8","9","10","66666666666666666",
+                                     ",", ",,", ",,,",",.,", ".,", "..,", "./", ".-", ",.-", ",.--.", "-----.", 
+                                     ".-.", ",.-.", "-.-", "'","''","'''", "_", "__",
+                                     ".", "..", "...", "....",".....", "......", ".......", "........",
+                                     ".........", "..........", "...........",  ".............", "..............", "...............",
+                                     "-", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------", 
+                                     "a","b","c","ç","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","w","y","z",
+                                     "aa","bb","cc","dd","ee","ff","gg","hh","ii","jj","kk","ll","mm","nn","ññ","oo","pp","qq","rr","ss","tt",
+                                     "uu","ww","yy","zz", "aaa","bbb","ccc","ddd","eee","fff","ggg","hhh","iii","jjj","kkk","lll","mmm","nnn",
+                                     "ooo","ppp","qqq","rrr","sss","ttt","uuu","vvv","www","yyy","zzz", 
+                                     "x","xx","xxx","xxxx","xxxxx","xxxxxx","xxxxxxx","xxxxxxxx","xxxxxxxxx","xxxxxxxxxx",
+                                     "xxxxxxxxxxxx", "xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxx",
+                                     "pppppppppppppppp","wwwwwww","ddddddddddddd", "eeeeeeeeeee","sssssssss", "nnnnnnnnnnnnnnnn",
+                                     "cccccccccc", "xxxxxxxxvv","xxxl", "xxyy", "yyyy", "xxxxxx  xx   xxxx",
+                                     "X", "XX", "XXX", "XXXX", "XXXXXX", "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                                     "II", "III","MMM", "NNN", "OO", "OOO", "PPP", 
+                                     "ssn", "zs", "sxz", "nnzx", "yx", "ñl", "ty", "tyu", "Eeee","pppppp pp", "ooo oo", "sss  sssss",
+                                     "uno", "dos", "tres", "cuatro","cinco","seis","siete","ocho","nueve","diez",
+                                     "Niiimnbhgt", "mnbhgt", "jmjoiug", "mnjhbgty","mmnnjhu", "nbvcf")))
+
+sum(is.na(PME2018$nombre_actividad1))
+
+##Eliminación de filas con NA en la var. Nombre actividad
+
+PME2018 <- PME2018[!(is.na(PME2018$nombre_actividad1)), ]
+
+#Asignar NA cuando no hay descripción de acción en descripcion_actividad1
+
+PME2018 <- PME2018 %>%
+  replace_with_na(replace = list(descripcion_actividad1 = 
+                                   c("no hay acción", "No hay Acción", "NO HAY ACCIÓN",	"No hay acción", "no hay acción",
+                                     "sin acción", "sin  acción", "sin accion 2", "sin acción 2", "Sin acción", "Sin Acción",
+                                     "Sin Accion","2. Sin accion", "1Sin accion", "No ejecutada", "No implementada",
+                                     "objetivo no se ocupará", "objetivo no se utilizará", "NO HAY ESTRATEGIA ABORDADA",
+                                     "No se abordará", "No se abordará." ,"NO SE ABORDARA Estrategia", 
+                                     "NO HAY ESTRATEGIA Abordada", "NO SE ABORDARA ESTRATEGIA",
+                                     "NO Considerar Estrategia", "NO CONSIDERAR Estrategia",
+                                     "NO SE PUEDE ABORDAR Estrategia","NO SE PUEDE ABORDAR ESTRATEGIA",
+                                     "No se puede Abordar Estrategia", "No se puede abordar Estrategia", 
+                                     "ESTRATEGIA NO ABORDABLE", "ESTRATEGIA NO Abordable", "Estrategia no se ABORDARA",
+                                     "Estrategia no abordada", "estrategia no abordada", "Estrategia No Abordada",
+                                     "ESTRATEGIA no abordada", "Estrategia no se ABORDADA", "No abordada", "No abordado",
+                                     "ESTRATEGIA NO se abordara", "estrategia no será abordada", "Sin aplicación",
+                                     "No existe estrategia para realizar acción error de digitación", 
+                                     "No corresponde redactar acción por no poder eliminar estrategia anual",
+                                     "Aquí no hay acción  por error se digito en esta Dimensión un punto(.) lo que ha provocado esto.",
+                                     "Sin segundo sello", "Sin aplicabilidad en PME", "Inaplicable", "Sin contexto",
+                                     "sin nombre", "Sin información", "sin indicador", "No existe estrategia",
+                                     "No corresponde", "- No procede.", "no indicador", "No Aplica en U. Educativa",
+                                     "- No aplica.", "no aplica", "no aplica.", "No aplica", "NO APLICA", "Aplica",
+                                     "NO aplica", "no APLICA", "no es aplicable", "No aplica acción","No aplica esta acción",
+                                     "No aplica 1", "no aplica 1", "No aplica1", "no aplica1","No aplica_1", "no aplica_1", "No aplica001",
+                                     "No aplica 2", "no aplica 2", "No aplica2", "no aplica2",
+                                     "No aplica 3", "no aplica 3", "No aplica3", "no aplica3",
+                                     "No aplica 4", "no aplica 4", "No aplica4", "no aplica4","no apl,ica 4",
+                                     "No aplica 5", "no aplica 5", "No aplica5", "no aplica5",
+                                     "No aplica 6", "no aplica 6", "No aplica6", "no aplica6",
+                                     "No aplica 7", "no aplica 7", "No aplica7", "no aplica7",
+                                     "No aplica 8", "no aplica 8", "No aplica8", "no aplica8",
+                                     "No aplica 9", "no aplica 9", "No aplica9", "no aplica9",
+                                     "No aplica 10", "no aplica 10", "No aplica10", "no aplica10",
+                                     "No aplica 11", "no aplica 11", "No aplica11", "no aplica11", "aplica 11",
+                                     "No hay aplicabilidad", "Duplicidad", "Duplicidad1", "duplicidad",
+                                     "- Estrategia no aplica.", "- Estrategia no corresponde.", "- Estrategia no procede.", 
+                                     "estrategia repetida", "estrategia que se repite", "Estrategia no corresponde",
+                                     "REPETIDO", "REPETIDO1", "IDEM A LA ANTERIOR", "DOS VECES", 
+                                     "Acción acción", "Acción 1", "Acción 2", "acción", "accion",
+                                     "Acción (vacío)", "Acción vacía1", "Acción vacía2", "Acción vacía3", "Acción vacío4",
+                                     "objetivo repetido anteriormente", "- Repite Estrategia. No procede.", 
+                                     "Error de Tipeo","Error de tipeo.",
+                                     "error de plataforma","ERROR DE PLATAFORMA", "Error de plataforma 10",
+                                     "error sistema", "ERROR DEL SISTEMA", "ERROR DE SISTEMA", "ERROR SISTEMA", 
+                                     "Nada", "Con error", "No hay coherencia",
+                                     "Indicado por apoyo sep", "Según apoyosep","Informado a apoyosep", "Sugerido por apoyosep",
+                                     "Instrucción por correo", "Indicado por apoyosep", "Error fase, informado a apoyosep",
+                                     "Error fase estratégica, informado apoyosep", "Error informado a apoyosep",
+                                     "Error en planificación, informado a apoyosep", "Error en la planificación estratégica",
+                                     "ERRO DEL SISTEMA", "ERROR EN EL SISTEMA", "ERROR", "ERROR SISTEMA DOS", 
+                                     "ERROR EN EL SISTEMA.", "ERROR EN EL SISTEMA DOS", "ERROR DOS", "ERRor",	"Error",	
+                                     "Error de sistema", "error de digitación", "Error de digitación", 
+                                     "DIFICULTAD DEL SISTEMA", "sin descripcion", "Sin aplicabilidad en PME",
+                                     "0", "00", "000", "0000", "00000", "000000", "05", "5", "0,", "0'", 
+                                     "02","021", "1", "2", "3", "4", "5","6","7","8","9","10","66666666666666666",
+                                     ",", ",,", ",,,",",.,", ".,", "..,", "./", ".-", ",.-", ",.--.", "-----.", 
+                                     ".-.", ",.-.", "-.-", "'","''","'''", "_", "__",
+                                     ".", "..", "...", "....",".....", "......", ".......", "........",
+                                     ".........", "..........", "...........",  ".............", "..............", "...............",
+                                     "-", "--", "---", "----", "-----", "------", "-------", "--------", "---------", "----------", 
+                                     "a","b","c","ç","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","w","y","z",
+                                     "aa","bb","cc","dd","ee","ff","gg","hh","ii","jj","kk","ll","mm","nn","ññ","oo","pp","qq","rr","ss","tt",
+                                     "uu","ww","yy","zz", "aaa","bbb","ccc","ddd","eee","fff","ggg","hhh","iii","jjj","kkk","lll","mmm","nnn",
+                                     "ooo","ppp","qqq","rrr","sss","ttt","uuu","vvv","www","yyy","zzz", 
+                                     "x","xx","xxx","xxxx","xxxxx","xxxxxx","xxxxxxx","xxxxxxxx","xxxxxxxxx","xxxxxxxxxx",
+                                     "xxxxxxxxxxxx", "xxxxxxxxxxxxxxx","xxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxx",
+                                     "pppppppppppppppp","wwwwwww","ddddddddddddd", "eeeeeeeeeee","sssssssss", "nnnnnnnnnnnnnnnn",
+                                     "cccccccccc", "xxxxxxxxvv","xxxl", "xxyy", "yyyy", "xxxxxx  xx   xxxx",
+                                     "X", "XX", "XXX", "XXXX", "XXXXXX", "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+                                     "II", "III","MMM", "NNN", "OO", "OOO", "PPP", 
+                                     "ssn", "zs", "sxz", "nnzx", "yx", "ñl", "ty", "tyu", "Eeee","pppppp pp", "ooo oo", "sss  sssss",
+                                     "uno", "dos", "tres", "cuatro","cinco","seis","siete","ocho","nueve","diez",
+                                     "Niiimnbhgt", "mnbhgt", "jmjoiug", "mnjhbgty","mmnnjhu", "nbvcf")))
+
+sum(is.na(PME2018$descripcion_actividad1))
+
+
+###Para normalizar el texto se puede usar "Latin-ASCII", sin embargo también elimina las "ñ".
+#library("stringi")
+#stri_trans_general(PME2018$nombre_actividad1, 'Latin-ASCII')
+#stri_trans_general(PME2018$descripcion_actividad1, 'Latin-ASCII')
+
+#Se realiza manual:
+
+# pasar a minúscula
+
+PME2018$nombre_actividad1 <- tolower(PME2018$nombre_actividad1)
+PME2018$descripcion_actividad1 <- tolower(PME2018$descripcion_actividad1)
+
+# Reeemplazar tildes y otros caracteres
+library(stringr)
+
+PME2018$nombre_actividad1 <- str_replace_all(PME2018$nombre_actividad1, 
+                                             c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                               "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                               "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                               "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                               "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+#Eliminar puntos en variable nombre actividad
+PME2018$nombre_actividad1 <- str_replace_all(PME2018$nombre_actividad1, c("[.]$" = "") ) 
+
+
+PME2018$descripcion_actividad1 <- str_replace_all(PME2018$descripcion_actividad1, 
+                                                  c("á"="a", "à"="a", "ä"="a", "â"="a",
+                                                    "é"="e", "è"="e", "ë"="e", "ê"="e",
+                                                    "í"="i", "ì"="i", "ï"="i", "î"="i",
+                                                    "ó"="o", "ò"="o", "ö"="o", "ô"="o",
+                                                    "ú"="u", "ù"="u", "ü"="u", "û"="u"))
+
+
+##división BD 2018
+
+PME2018_CE <- PME2018 %>%
+  filter(dimension1 == "Convivencia Escolar")
+
+PME2018_GR <- PME2018 %>%
+  filter(dimension1 == "Gestión de Recursos")
+
+PME2018_GP <- PME2018 %>%
+  filter(dimension1 == "Gestión Pedagógica")
+
+PME2018_L <- PME2018 %>%
+  filter(dimension1 == "Liderazgo")
+
+
+### Creación de variable Folio para acciones
+
+Folio <- rownames(PME2018_CE)
+PME2018_CE <- cbind(Folio=Folio, PME2018_CE)
+
+Folio <- rownames(PME2018_GR)
+PME2018_GR <- cbind(Folio=Folio, PME2018_GR)
+
+Folio <- rownames(PME2018_GP)
+PME2018_GP <- cbind(Folio=Folio, PME2018_GP)
+
+Folio <- rownames(PME2018_L)
+PME2018_L <- cbind(Folio=Folio, PME2018_L)
+
+#############################################################################
+########  ANALISIS  - PME2018_CE  -  nombre_actividad1   ####################
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_CE$nombre_actividad1, doc_id = PME2018_CE$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_CE$nombre_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Nombre actividad CE 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+
+
+#############################################################################
+########  ANALISIS  - PME2018_CE  -  descripcion_actividad1   ####################
+
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_CE$descripcion_actividad1, doc_id = PME2018_CE$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_CE$descripcion_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Descripción Actividad CE 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+
+
+
+#############################################################################
+########  ANALISIS  - PME2018_GP  -  nombre_actividad1   ####################
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_GP$nombre_actividad1, doc_id = PME2018_GP$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_GP$nombre_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Nombre Actividad GP 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+
+
+#############################################################################
+########  ANALISIS  - PME2018_GP  -  descripcion_actividad1   ####################
+
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_GP$descripcion_actividad1, doc_id = PME2018_GP$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_GP$descripcion_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Descripción Actividad GP 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+
+
+#############################################################################
+########  ANALISIS  - PME2018_GR  -  nombre_actividad1   ####################
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_GR$nombre_actividad1, doc_id = PME2018_GR$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_GR$nombre_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Nombre Actividad GR 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+
+
+#############################################################################
+########  ANALISIS  - PME2018_GR  -  descripcion_actividad1   ####################
+
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_GR$descripcion_actividad1, doc_id = PME2018_GR$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_GR$descripcion_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Descripción Actividad GR 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+
+#############################################################################
+########  ANALISIS  - PME2018_L  -  nombre_actividad1   ####################
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_L$nombre_actividad1, doc_id = PME2018_L$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_L$nombre_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Nombre Actividad L 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
+
+
+#############################################################################
+########  ANALISIS  - PME2018_L  -  descripcion_actividad1   ####################
+
+
+### UDPipe Natural Language Processing - Basic Analytical Use Cases
+
+library(udpipe)
+
+ud_model <- udpipe_download_model(language = "spanish")
+ud_model <- udpipe_load_model("/Users/aliciaibanez/spanish-gsd-ud-2.5-191206.udpipe")
+
+x <- udpipe_annotate(ud_model, x = PME2018_L$descripcion_actividad1, doc_id = PME2018_L$rbd1)
+x <- as.data.frame(x)
+
+#Análisis. 
+#Basic frequency statistics
+
+library(lattice)
+stats <- txt_freq(PME2018_L$descripcion_actividad1)
+stats$key <- factor(stats$key, levels = rev(stats$key))
+#View(stats$key)
+#View(stats$freq)
+
+#barchart(key ~ freq, data = head(stats, 15), col = "cadetblue", 
+#         main = "Nombre actividad 
+#        Convivencia Escolar 2018", 
+#       xlab = "Frecuencia")
+
+#Análisis. 
+#Basic frequency statistics UPOS
+
+stats_UPOS <- txt_freq(x$upos)
+stats_UPOS$key <- factor(stats_UPOS$key, levels = rev(stats_UPOS$key))
+barchart(key ~ freq, data = stats_UPOS, col = "cadetblue", 
+         main = "UPOS (Universal Parts of Speech)\n Frecuencia Descripción Actividad L 2018", 
+         xlab = "Frecuencia")
+
+## NOUNS
+
+stats_noun <- subset(x, upos %in% c("NOUN")) 
+stats_noun <- txt_freq(stats_noun$token)
+stats_noun$key <- factor(stats_noun$key, levels = rev(stats_noun$key))
+barchart(key ~ freq, data = head(stats_noun, 15), col = "cadetblue", 
+         main = "Sustantivos más frecuentes", xlab = "Frecuencia")
+
+## ADJECTIVES
+
+stats_adj <- subset(x, upos %in% c("ADJ")) 
+stats_adj <- txt_freq(stats_adj$token)
+stats_adj$key <- factor(stats_adj$key, levels = rev(stats_adj$key))
+barchart(key ~ freq, data = head(stats_adj, 15), col = "cadetblue", 
+         main = "Adjetivos más frecuentes", xlab = "Frecuencia")
+
+## VERBOS
+
+stats_verb <- subset(x, upos %in% c("VERB")) 
+stats_verb <- txt_freq(stats_verb$token)
+stats_verb$key <- factor(stats_verb$key, levels = rev(stats_verb$key))
+barchart(key ~ freq, data = head(stats_verb, 15), col = "cadetblue", 
+         main = "Verbos más frecuentes", xlab = "Frecuencia")
+
+
+### Palabras claves 3 métodos
+
+## Using RAKE - Keywords
+stats_rake <- keywords_rake(x = x, term = "lemma", group = "doc_id", 
+                            relevant = x$upos %in% c("NOUN", "ADJ"))
+stats_rake$key <- factor(stats_rake$keyword, levels = rev(stats_rake$keyword))
+barchart(key ~ rake, data = head(subset(stats_rake, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por RAKE", 
+         xlab = "Rake")
+
+## Using Pointwise Mutual Information Collocations
+
+x$word <- tolower(x$token)
+stats_collocation <- keywords_collocation(x = x, term = "word", group = "doc_id")
+stats_collocation$key <- factor(stats_collocation$keyword, levels = rev(stats_collocation$keyword))
+barchart(key ~ pmi, data = head(subset(stats_collocation, freq > 3), 15), col = "cadetblue", 
+         main = "Palabras claves identificadas por PMI Collocation", 
+         xlab = "PMI (Pointwise Mutual Information)")
+
+## Using a sequence of POS tags (noun phrases / verb phrases)
+x$phrase_tag <- as_phrasemachine(x$upos, type = "upos")
+stats_tags <- keywords_phrases(x = x$phrase_tag, term = tolower(x$token), 
+                               pattern = "(A|N)*N(P+D*(A|N)*N)*", 
+                               is_regex = TRUE, detailed = FALSE)
+stats_tags <- subset(stats_tags, ngram > 1 & freq > 3)
+stats_tags$key <- factor(stats_tags$keyword, levels = rev(stats_tags$keyword))
+barchart(key ~ freq, data = head(stats_tags, 15), col = "cadetblue", 
+         main = "Palabras claves - simple noun phrases", xlab = "Frecuencia")
+
+
+### Co-occurrences
+
+cooc <- cooccurrence(x = subset(x, upos %in% c("NOUN", "ADJ")), 
+                     term = "lemma", 
+                     group = c("doc_id", "paragraph_id", "sentence_id"))
+head(cooc)
+
+library(igraph)
+library(ggraph)
+library(ggplot2)
+wordnetwork <- head(cooc, 30)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc), edge_colour = "blue") +
+  geom_node_text(aes(label = name), col = "cadetblue", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  theme(legend.position = "none") +
+  labs(title = "Cooccurrencias dentro de una oración", subtitle = "Sustantivos y Adjetivos")
+
+#Nouns / adjectives which follow one another
+
+cooc <- cooccurrence(x$lemma, relevant = x$upos %in% c("NOUN", "ADJ"), skipgram = 1)
+head(cooc)
+
+wordnetwork <- head(cooc, 15)
+wordnetwork <- graph_from_data_frame(wordnetwork)
+ggraph(wordnetwork, layout = "fr") +
+  geom_edge_link(aes(width = cooc, edge_alpha = cooc)) +
+  geom_node_text(aes(label = name), col = "darkgreen", size = 4) +
+  theme_graph(base_family = "Arial Narrow") +
+  labs(title = "Palabras que se suceden", subtitle = "Sustantivos y Adjetivos")
+
+
+### Correlaciones
+
+x$id <- unique_identifier(x, fields = c("sentence_id", "doc_id"))
+dtm <- subset(x, upos %in% c("NOUN", "ADJ"))
+dtm <- document_term_frequencies(dtm, document = "id", term = "lemma")
+dtm <- document_term_matrix(dtm)
+dtm <- dtm_remove_lowfreq(dtm, minfreq = 5)
+termcorrelations <- dtm_cor(dtm)
+y <- as_cooccurrence(termcorrelations)
+y <- subset(y, term1 < term2 & abs(cooc) > 0.2)
+y <- y[order(abs(y$cooc), decreasing = TRUE), ]
+head(y)
